@@ -38,3 +38,4 @@ class Bishop(Piece):
                     movementOptions.add(newCoords)
 
         self.movementOptions = movementOptions
+        self.viableOptions = viableOptions
