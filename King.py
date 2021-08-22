@@ -21,9 +21,9 @@ class King(Piece):
         for move in self.movementDirections:
 
             newCoords = (self.place[0] + move[0], self.place[1] + move[1])
-            if newCoords[0] >= 0 and newCoords[0] <= 7 and newCoords[1] >= 0 and newCoords[1] <= 7:
-                if isinstance(myBoard.squares[newCoords[0]][newCoords[1]], Piece):
-                    if myBoard.squares[newCoords[0]][newCoords[1]].color != self.color:
+            if self.checkInbounds(newCoords):
+                if isinstance(myBoard.lookAtSquare(newCoords), Piece):
+                    if myBoard.lookAtSquare(newCoords).color != self.color:
                         viableOptions.add(newCoords)
 
                 movementOptions.add(newCoords)

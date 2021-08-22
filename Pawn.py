@@ -18,20 +18,19 @@ class Pawn(Piece):
             self.icon = f"{Colors.BLUE}P{Colors.END}"
 
     def getMovementOptions(self, myBoard):
-        isBlocked = False
         movementOptions = set([])
         viableOptions = set([])
 
         newCoords = (self.place[0] + self.movementDirections[0][0], self.place[1] + self.movementDirections[0][1])
         if newCoords[0] >= 0 and newCoords[0] <= 7 and newCoords[1] >= 0 and newCoords[1] <= 7:
             movementOptions.add(newCoords)
-            if not isinstance(myBoard.lookAtSquare(newCoords[0], newCoords[1]), Piece):
+            if not isinstance(myBoard.lookAtSquare(newCoords), Piece):
                 viableOptions.add(newCoords)
 
         if self.hasMoved == False:
             twoForward = (newCoords[0] + self.movementDirections[0][0], newCoords[1] + self.movementDirections[0][1])
             movementOptions.add(newCoords)
-            if not isinstance(myBoard.lookAtSquare(twoForward[0], twoForward[1]), Piece):
+            if not isinstance(myBoard.lookAtSquare(twoForward), Piece):
                 viableOptions.add(newCoords)
 
         self.movementOptions = movementOptions

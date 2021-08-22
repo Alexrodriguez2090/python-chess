@@ -40,8 +40,8 @@ class Board:
                 row[7] = Rook("white", (rowNum, 7))
             rowNum += 1
 
-    def lookAtSquare(self, row, column):
-        return self.squares[row][column]
+    def lookAtSquare(self, coords):
+        return self.squares[coords[0]][coords[1]]
 
     def __str__(self):
         stringSequence = ""

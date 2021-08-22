@@ -11,22 +11,22 @@ def parseThroughBoard(myBoard):
     allPieces = []
     for row in range(8):
         for column in range(8):
-            if isinstance(myBoard.lookAtSquare(row, column), Piece):
-                allPieces.append([myBoard.lookAtSquare(row, column).color, myBoard.lookAtSquare(row, column).name, (row, column)])
+            if isinstance(myBoard.lookAtSquare((row, column)), Piece):
+                allPieces.append([myBoard.lookAtSquare((row, column)).color, myBoard.lookAtSquare((row, column)).name, (row, column)])
     return allPieces
 
 def getAllMovementOptions(myBoard):
     allPieces = parseThroughBoard(myBoard)
 
     for piece in allPieces:
-        myBoard.lookAtSquare(piece[2][0], piece[2][1]).getMovementOptions(myBoard)
+        myBoard.lookAtSquare(piece[2]).getMovementOptions(myBoard)
 
 def updateMovementOptions(squareMovedFrom, squareMovedTo, myBoard):
     allPieces = parseThroughBoard(myBoard)
 
     for piece in allPieces:
-        if squareMovedFrom in myBoard.lookAtSquare(piece[2][0], piece[2][1]).movementDirections or squareMovedTo in myBoard.lookAtSquare(piece[2][0], piece[2][1]).movementDirections:
-            myBoard.lookAtSquare(piece[2][0], piece[2][1]).getMovementOptions(myBoard)
+        if squareMovedFrom in myBoard.lookAtSquare(piece[2]).movementDirections or squareMovedTo in myBoard.lookAtSquare(piece[2]).movementDirections:
+            myBoard.lookAtSquare(piece[2]).getMovementOptions(myBoard)
 
 def checkPawnAttack(pawn, myBoard, allPieces): #Rewrite to pawn class
     for piece in allPieces:
@@ -67,7 +67,7 @@ def checkForPins(piece, myBoard, oppKing):
         semiPinnedPieces = []
         if len(pieceLookingThrough) > 1:
             for square in pieceLookingThrough:
-                if isinstance(myBoard.lookAtSquare(row, column), Piece):
+                if isinstance(myBoard.lookAtSquare((row, column)), Piece):
                     semiPinnedPieces.append((row, column))
                 if len(semiPinnedPieces) > 1: #If there is more than one piece, we do not have a pin
                     return False
@@ -75,7 +75,7 @@ def checkForPins(piece, myBoard, oppKing):
             semiPinnedPieces = pieceLookingThrough
 
         #If the one piece in the middle is a different color, it is pinned
-        if piece.color != myBoard.lookAtSquare(pieceLookingThrough[0][0], pieceLookingThrough[0][1].color):
+        if piece.color != myBoard.lookAtSquare(pieceLookingThrough[0]).color:
             return pieceLookingThrough[0]
         else: #If the piece in the middle is the same color
             return False
@@ -107,8 +107,8 @@ def checkForPinsBad(myBoard): #Rewrite for piece by piece usage
 
     for king in kings:
         for piece in allPieces:
-            if king[2] in myBoard.lookAtSquare(piece[2][0], piece[2][1]).movementOptions and king[2] not in myBoard.lookAtSquare(piece[2][0], piece[2][1]).viableOptions: #If another piece is directly looking at a king, but there's at least one piece in the middle
-                if myBoard.lookAtSquare(piece[2][0], piece[2][1]).color != king[0]: #If that piece is opposite color
+            if king[2] in myBoard.lookAtSquare(piece[2]).movementOptions and king[2] not in myBoard.lookAtSquare(piece[2]).viableOptions: #If another piece is directly looking at a king, but there's at least one piece in the middle
+                if myBoard.lookAtSquare(piece[2]).color != king[0]: #If that piece is opposite color
                     moveLength = (king[2][0] - piece[2][0], king[2][1] - piece[2][1])
 
                     moveDirection = ()
@@ -129,14 +129,15 @@ def checkForPinsBad(myBoard): #Rewrite for piece by piece usage
                     if len(pieceLookingThrough) > 1:
                         semiPinnedPieces = []
                         for square in pieceLookingThrough:
-                            if isinstance(myBoard.lookAtSquare(row, column), Piece):
+                            if isinstance(myBoard.lookAtSquare((row, column)), Piece):
                                 semiPinnedPieces.append((row, column))
                             if len(semiPinnedPieces) > 1:
                                 return False
                     else: #Else there is only one piece being pinned
                         return
 
-                    if len(semiPinnedPieces) >
+                    if len(semiPinnedPieces) > 1:
+                        pass
             else:
                 return False
 def checkForChecksBad(myBoard): #Only allow legal moves that get the king out of check, can be a pin
@@ -151,8 +152,8 @@ def checkForChecksBad(myBoard): #Only allow legal moves that get the king out of
 
     for king in kings:
         for piece in allPieces:
-            if king[2] in myBoard.lookAtSquare(piece[2][0], piece[2][1]).viableOptions: #If another piece is directly looking at a king
-                if myBoard.lookAtSquare(piece[2][0], piece[2][1]).color != king[0]: #If that piece is opposite color
+            if king[2] in myBoard.lookAtSquare(piece[2]).viableOptions: #If another piece is directly looking at a king
+                if myBoard.lookAtSquare(piece[2]).color != king[0]: #If that piece is opposite color
                     if king[0] == "white":
                         return 0
                     if king[0] == "black":
