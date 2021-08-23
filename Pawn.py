@@ -21,17 +21,26 @@ class Pawn(Piece):
         movementOptions = set([])
         viableOptions = set([])
 
-        newCoords = (self.place[0] + self.movementDirections[0][0], self.place[1] + self.movementDirections[0][1])
-        if newCoords[0] >= 0 and newCoords[0] <= 7 and newCoords[1] >= 0 and newCoords[1] <= 7:
-            movementOptions.add(newCoords)
-            if not isinstance(myBoard.lookAtSquare(newCoords), Piece):
-                viableOptions.add(newCoords)
+        oneForward = (self.place[0] + self.movementDirections[0][0], self.place[1] + self.movementDirections[0][1])
+        if self.checkInbounds(oneForward):
+            movementOptions.add(oneForward)
+            if not isinstance(myBoard.lookAtSquare(oneForward), Piece):
+                viableOptions.add(oneForward)
 
         if self.hasMoved == False:
-            twoForward = (newCoords[0] + self.movementDirections[0][0], newCoords[1] + self.movementDirections[0][1])
-            movementOptions.add(newCoords)
-            if not isinstance(myBoard.lookAtSquare(twoForward), Piece):
-                viableOptions.add(newCoords)
+            twoForward = (oneForward[0] + self.movementDirections[0][0], oneForward[1] + self.movementDirections[0][1])
+            if self.checkInbounds(twoForward):
+                movementOptions.add(twoForward)
+                if not isinstance(myBoard.lookAtSquare(twoForward), Piece) and not isinstance(myBoard.lookAtSquare(oneForward), Piece):
+                    viableOptions.add(twoForward)
+
+        for attackDirection in self.attackDirections:
+            attackedCoord = (self.place[0] + attackDirection[0], self.place[1] + attackDirection[1])
+            if self.checkInbounds(attackedCoord):
+                movementOptions.add(attackedCoord)
+                if isinstance(myBoard.lookAtSquare(attackedCoord), Piece):
+                    if myBoard.lookAtSquare(attackedCoord).color != self.color:
+                        viableOptions.add(attackedCoord)
 
         self.movementOptions = movementOptions
         self.viableOptions = viableOptions

@@ -1,5 +1,12 @@
 from Piece import Piece
+from Rook import Rook
+from Bishop import Bishop
+from Knight import Knight
+from Queen import Queen
+from King import King
 from Pawn import Pawn
+import Move
+import copy
 
 def parseThroughBoard(myBoard):
     #[["color", "piecetype", (row, column)]]
@@ -15,11 +22,17 @@ def parseThroughBoard(myBoard):
                 allPieces.append([myBoard.lookAtSquare((row, column)).color, myBoard.lookAtSquare((row, column)).name, (row, column)])
     return allPieces
 
-def getAllMovementOptions(myBoard):
-    allPieces = parseThroughBoard(myBoard)
+def getListOfAllPieces(myBoard):
+    allPieces = []
+    for row in myBoard.squares:
+        for square in row:
+            if isinstance(square, Piece):
+                allPieces.append(square)
+    return allPieces
 
+def getAllMovementOptions(myBoard, allPieces):
     for piece in allPieces:
-        myBoard.lookAtSquare(piece[2]).getMovementOptions(myBoard)
+        piece.getMovementOptions(myBoard)
 
 def updateMovementOptions(squareMovedFrom, squareMovedTo, myBoard):
     allPieces = parseThroughBoard(myBoard)
@@ -41,7 +54,85 @@ def checkForChecks(piece, oppKing):
     else:
         return False
 
-def checkForPins(piece, myBoard, oppKing):
+def checkKingCheck(myBoard, myMove, piece, colorPlaying):
+    testBoard = copy.deepcopy(myBoard)
+
+    testBoard.squares[myMove[0]][myMove[1]] = copy.deepcopy(testBoard.lookAtSquare(piece.place))
+    testBoard.squares[piece.place[0]][piece.place[1]] = 0
+    for row in range(8):
+        for column in range(8):
+            if isinstance(testBoard.lookAtSquare((row, column)), King):
+                if testBoard.lookAtSquare((row, column)).color == colorPlaying:
+                    king = testBoard.lookAtSquare((row, column))
+                    break
+
+    rookMoves = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+    bishopMoves = [(1, 1), (-1, 1), (1, -1), (-1, -1)]
+    knightMoves = [(2, 1), (-2, 1), (2, -1), (-2, -1), (1, 2), (-1, 2), (1, -2), (-1, -2)]
+    if colorPlaying == "white":
+        pawnMoves = [(1, 1), (1, -1)]
+    elif colorPlaying == "black":
+        pawnMoves = [(-1, 1), (-1, -1)]
+
+    for move in pawnMoves:
+        kingSquare = king.place
+        if king.checkInbounds(kingSquare):
+            if isinstance(testBoard.lookAtSquare(kingSquare), Pawn):
+                if colorPlaying != testBoard.lookAtSquare(kingSquare).color:
+                    return False
+
+    for move in rookMoves:
+        foundPiece = False
+        kingVision = (king.place[0] + move[0], king.place[1] + move[1])
+
+        while king.checkInbounds(kingVision) and foundPiece == False:
+            if isinstance(testBoard.lookAtSquare(kingVision), Piece):
+                foundPiece = True
+                if isinstance(testBoard.lookAtSquare(kingVision), Rook) or isinstance(myBoard.lookAtSquare(kingVision), Queen):
+                    if colorPlaying != testBoard.lookAtSquare(kingVision).color:
+                        return False
+            else:
+                kingVision = (kingVision[0] + move[0], kingVision[1] + move[1])
+
+    for move in bishopMoves:
+        foundPiece = False
+        kingVision = (king.place[0] + move[0], king.place[1] + move[1])
+        while king.checkInbounds(kingVision) and foundPiece == False:
+            if isinstance(testBoard.lookAtSquare(kingVision), Piece):
+                foundPiece = True
+                if isinstance(testBoard.lookAtSquare(kingVision), Bishop) or isinstance(myBoard.lookAtSquare(kingVision), Queen):
+                    if colorPlaying != testBoard.lookAtSquare(kingVision).color:
+                        return False
+            else:
+                kingVision = (kingVision[0] + move[0], kingVision[1] + move[1])
+
+    for move in knightMoves:
+        kingSquare = king.place
+        if king.checkInbounds(kingSquare):
+            if isinstance(testBoard.lookAtSquare(kingSquare), Knight):
+                if colorPlaying != testBoard.lookAtSquare(kingSquare).color:
+                    return False
+    piece.legalOptions.append(myMove)
+
+def getLegalMoves(myBoard, colorPlaying):
+    allPieces = getListOfAllPieces(myBoard)
+    getAllMovementOptions(myBoard, allPieces)
+
+    moveLegality = 0
+    for piece in allPieces:
+        if piece.color == colorPlaying:
+            piece.legalOptions = []
+            if piece.color == "white":
+                for myMove in piece.viableOptions:
+                    moveLegality = checkKingCheck(myBoard, myMove, piece, colorPlaying)
+            else:
+                for myMove in piece.viableOptions:
+                    moveLegality = checkKingCheck(myBoard, myMove, piece, colorPlaying)
+
+
+            #if moveLegality == True:
+                #piece.legalOptions.append(piece)
+def checkForPins(myBoard, piece, oppKing):
     #If 'piece' has a line at the king, but there's at least one other piece in the middle
     if oppKing.place in piece.movementOptions and oppKing.place not in piece.viableOptions:
         moveLength = (oppKing.place[0] - piece.place[0], oppKing.place[1] - piece.place[1])
@@ -76,25 +167,12 @@ def checkForPins(piece, myBoard, oppKing):
 
         #If the one piece in the middle is a different color, it is pinned
         if piece.color != myBoard.lookAtSquare(pieceLookingThrough[0]).color:
-            return pieceLookingThrough[0]
+            return myBoard.lookAtSquare(pieceLookingThrough[0])
         else: #If the piece in the middle is the same color
             return False
 
     else:
         return False
-
-def getLegalMoves(myBoard):
-    allPieces = parseThroughBoard(myBoard)
-
-    for piece in allPieces:
-        if piece[1] == "Pawn":
-            pass
-        elif piece[1] != "King":
-            pass
-        elif piece[1] == "King":
-            pass
-
-
 def checkForPinsBad(myBoard): #Rewrite for piece by piece usage
     allPieces = parseThroughBoard(myBoard)
 

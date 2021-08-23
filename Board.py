@@ -13,6 +13,7 @@ class Board:
 
     def setup(self): #add to init?
         rowNum = 0
+        self.squares[2][2] = Bishop("white", (2, 2))
         for row in self.squares:
             if rowNum == 0: #Black's backline
                 row[0] = Rook("black", (rowNum, 0))

@@ -25,11 +25,8 @@ class Queen(Piece):
 
                 if self.checkInbounds(newCoords):
                     if isinstance(myBoard.lookAtSquare(newCoords), Piece):
-
-                        if myBoard.lookAtSquare(newCoords).color != self.color:
+                        if myBoard.lookAtSquare(newCoords).color != self.color and isBlocked == False:
                             viableOptions.add(newCoords)
-                        else:
-                            pass
                         isBlocked = True
 
                     if isBlocked == False:
@@ -38,3 +35,4 @@ class Queen(Piece):
                     movementOptions.add(newCoords)
 
         self.movementOptions = movementOptions
+        self.viableOptions = viableOptions
