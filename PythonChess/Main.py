@@ -9,7 +9,7 @@ colorPlaying = "white"
 Move.getLegalMoves(myBoard, colorPlaying)
 
 while gameMode == 0:
-    print("Welcome to PyChess")
+    print("Welcome to Python Chess")
     print("1. Play")
     print("2. Exit")
     choice = input().lower()
