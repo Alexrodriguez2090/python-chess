@@ -102,3 +102,13 @@ def getLegalMoves(myBoard, colorPlaying):
                 #Put the pieces back
                 testBoard.squares[piece.place[0]][piece.place[1]] = testBoard.squares[myMove[0]][myMove[1]]
                 testBoard.squares[myMove[0]][myMove[1]] = squareMovedTo
+
+def movePiece(myBoard, pieceMoved, squareMovedTo, colorPlaying): #cleanup after actually working
+    if isinstance(myBoard.lookAtSquare(pieceMoved), Piece):
+        if squareMovedTo in myBoard.lookAtSquare(pieceMoved).legalOptions and colorPlaying == myBoard.lookAtSquare(pieceMoved).color:
+            myBoard.squares[squareMovedTo[0]][squareMovedTo[1]] = myBoard.squares[pieceMoved[0]][pieceMoved[1]]
+            myBoard.squares[pieceMoved[0]][pieceMoved[1]] = 0
+            return True
+
+    else:
+        return False

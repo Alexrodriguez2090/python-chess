@@ -13,7 +13,6 @@ class Board:
 
     def setup(self): #add to init?
         rowNum = 0
-        self.squares[2][2] = Bishop("white", (2, 2))
         for row in self.squares:
             if rowNum == 0: #Black's backline
                 row[0] = Rook("black", (rowNum, 0))
@@ -46,10 +45,11 @@ class Board:
 
     def __str__(self):
         stringSequence = ""
-        rowNum = 1
+        rowNum = 0
         for row in self.squares:
             stringSequence += str(rowNum) + str(row) + "\n"
             rowNum += 1
+        stringSequence += "  0, 1, 2, 3, 4, 5, 6, 7"
         stringSequence += "  a, b, c, d, e, f, g, h"
         return stringSequence
 
