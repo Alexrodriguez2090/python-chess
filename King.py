@@ -15,8 +15,8 @@ class King(Piece):
 
     def getMovementOptions(self, myBoard): #Fix up king movement
         isBlocked = False
-        movementOptions = set([])
-        viableOptions = set([])
+        movementOptions = []
+        viableOptions = []
 
         for move in self.movementDirections:
 
@@ -24,9 +24,9 @@ class King(Piece):
             if self.checkInbounds(newCoords):
                 if isinstance(myBoard.lookAtSquare(newCoords), Piece):
                     if myBoard.lookAtSquare(newCoords).color != self.color:
-                        viableOptions.add(newCoords)
+                        viableOptions.append(newCoords)
 
-                movementOptions.add(newCoords)
+                movementOptions.append(newCoords)
 
         self.movementOptions = movementOptions
         self.viableOptions = viableOptions

@@ -18,29 +18,29 @@ class Pawn(Piece):
             self.icon = f"{Colors.BLUE}P{Colors.END}"
 
     def getMovementOptions(self, myBoard):
-        movementOptions = set([])
-        viableOptions = set([])
+        movementOptions = []
+        viableOptions = []
 
         oneForward = (self.place[0] + self.movementDirections[0][0], self.place[1] + self.movementDirections[0][1])
         if self.checkInbounds(oneForward):
-            movementOptions.add(oneForward)
+            movementOptions.append(oneForward)
             if not isinstance(myBoard.lookAtSquare(oneForward), Piece):
-                viableOptions.add(oneForward)
+                viableOptions.append(oneForward)
 
         if self.hasMoved == False:
             twoForward = (oneForward[0] + self.movementDirections[0][0], oneForward[1] + self.movementDirections[0][1])
             if self.checkInbounds(twoForward):
-                movementOptions.add(twoForward)
+                movementOptions.append(twoForward)
                 if not isinstance(myBoard.lookAtSquare(twoForward), Piece) and not isinstance(myBoard.lookAtSquare(oneForward), Piece):
-                    viableOptions.add(twoForward)
+                    viableOptions.append(twoForward)
 
         for attackDirection in self.attackDirections:
             attackedCoord = (self.place[0] + attackDirection[0], self.place[1] + attackDirection[1])
             if self.checkInbounds(attackedCoord):
-                movementOptions.add(attackedCoord)
+                movementOptions.append(attackedCoord)
                 if isinstance(myBoard.lookAtSquare(attackedCoord), Piece):
                     if myBoard.lookAtSquare(attackedCoord).color != self.color:
-                        viableOptions.add(attackedCoord)
+                        viableOptions.append(attackedCoord)
 
         self.movementOptions = movementOptions
         self.viableOptions = viableOptions

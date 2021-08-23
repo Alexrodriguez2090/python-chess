@@ -13,21 +13,21 @@ class Knight(Piece):
             self.icon = f"{Colors.BLUE}N{Colors.END}"
 
     def getMovementOptions(self, myBoard):
-        movementOptions = set([])
-        viableOptions = set([])
+        movementOptions = []
+        viableOptions = []
 
         for move in self.movementDirections:
             newCoords = (self.place[0] + move[0], self.place[1] + move[1])
             if self.checkInbounds(newCoords):
                 if isinstance(myBoard.lookAtSquare(newCoords), Piece): #If there is another piece on the square
                     if myBoard.lookAtSquare(newCoords).color != self.color:
-                        viableOptions.add(newCoords)
+                        viableOptions.append(newCoords)
                     else:
                         pass
 
                 else:
-                    viableOptions.add(newCoords)
-                movementOptions.add(newCoords)
+                    viableOptions.append(newCoords)
+                movementOptions.append(newCoords)
 
         self.movementOptions = movementOptions
         self.viableOptions = viableOptions

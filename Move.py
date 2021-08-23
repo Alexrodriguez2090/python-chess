@@ -5,7 +5,6 @@ from Knight import Knight
 from Queen import Queen
 from King import King
 from Pawn import Pawn
-import Move
 import copy
 
 def parseThroughBoard(myBoard):
@@ -46,7 +45,7 @@ def checkPawnAttack(pawn, myBoard, allPieces): #Rewrite to pawn class
         for attackDirection in pawn.attackDirections:
             attackedCoord = (pawn.place[0] + direction[0], pawn.place[1] + direction[1])
             if attackedCoord == piece[2]:
-                pawn.viableOptions.add(attackedCoord)
+                pawn.viableOptions.append(attackedCoord)
 
 def checkForChecks(piece, oppKing):
     if oppKing.place in piece.viableOptions:
@@ -56,9 +55,9 @@ def checkForChecks(piece, oppKing):
 
 def checkKingCheck(myBoard, myMove, piece, colorPlaying):
     testBoard = copy.deepcopy(myBoard)
-
     testBoard.squares[myMove[0]][myMove[1]] = copy.deepcopy(testBoard.lookAtSquare(piece.place))
     testBoard.squares[piece.place[0]][piece.place[1]] = 0
+
     for row in range(8):
         for column in range(8):
             if isinstance(testBoard.lookAtSquare((row, column)), King):
@@ -74,12 +73,24 @@ def checkKingCheck(myBoard, myMove, piece, colorPlaying):
     elif colorPlaying == "black":
         pawnMoves = [(-1, 1), (-1, -1)]
 
-    for move in pawnMoves:
+    for move in bishopMoves:
+        foundPiece = False
+        kingVision = (king.place[0] + move[0], king.place[1] + move[1])
+        while king.checkInbounds(kingVision) and foundPiece == False:
+            if isinstance(testBoard.lookAtSquare(kingVision), Piece):
+                foundPiece = True
+                if isinstance(testBoard.lookAtSquare(kingVision), Bishop) or isinstance(myBoard.lookAtSquare(kingVision), Queen):
+                    if colorPlaying != testBoard.lookAtSquare(kingVision).color:
+                        return
+            else:
+                kingVision = (kingVision[0] + move[0], kingVision[1] + move[1])
+
+    for move in knightMoves:
         kingSquare = king.place
         if king.checkInbounds(kingSquare):
-            if isinstance(testBoard.lookAtSquare(kingSquare), Pawn):
+            if isinstance(testBoard.lookAtSquare(kingSquare), Knight):
                 if colorPlaying != testBoard.lookAtSquare(kingSquare).color:
-                    return False
+                    return
 
     for move in rookMoves:
         foundPiece = False
@@ -90,6 +101,65 @@ def checkKingCheck(myBoard, myMove, piece, colorPlaying):
                 foundPiece = True
                 if isinstance(testBoard.lookAtSquare(kingVision), Rook) or isinstance(myBoard.lookAtSquare(kingVision), Queen):
                     if colorPlaying != testBoard.lookAtSquare(kingVision).color:
+                        return
+            else:
+                kingVision = (kingVision[0] + move[0], kingVision[1] + move[1])
+
+    for move in pawnMoves:
+        kingSquare = king.place
+        if king.checkInbounds(kingSquare):
+            if isinstance(testBoard.lookAtSquare(kingSquare), Pawn):
+                if colorPlaying != testBoard.lookAtSquare(kingSquare).color:
+                    return
+    piece.legalOptions.append(myMove)
+
+def getLegalMoves(myBoard, colorPlaying):
+    allPieces = getListOfAllPieces(myBoard)
+    getAllMovementOptions(myBoard, allPieces)
+
+    for piece in allPieces:
+        if piece.color == colorPlaying:
+            piece.legalOptions = []
+            for myMove in piece.viableOptions:
+                checkKingCheck(myBoard, myMove, piece, colorPlaying)
+
+
+def checkKingCheckCouldBeFaster(myBoard, myMove, piece, colorPlaying):
+    testBoard = copy.deepcopy(myBoard.squares)
+
+    testBoard[myMove[0]][myMove[1]] = copy.deepcopy(testBoard[piece.place[0]][piece.place[1]])
+    testBoard[piece.place[0]][piece.place[1]] = 0
+    for row in range(8):
+        for column in range(8):
+            if isinstance(testBoard[row][column], King):
+                if testBoard[row][column].color == colorPlaying:
+                    king = testBoard[row][column]
+                    break
+
+    rookMoves = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+    bishopMoves = [(1, 1), (-1, 1), (1, -1), (-1, -1)]
+    knightMoves = [(2, 1), (-2, 1), (2, -1), (-2, -1), (1, 2), (-1, 2), (1, -2), (-1, -2)]
+    if colorPlaying == "white":
+        pawnMoves = [(1, 1), (1, -1)]
+    elif colorPlaying == "black":
+        pawnMoves = [(-1, 1), (-1, -1)]
+
+    for move in pawnMoves:
+        kingSquare = king.place
+        if king.checkInbounds(kingSquare):
+            if isinstance(testBoard[kingSquare[0]][kingSquare[1]], Pawn):
+                if colorPlaying != testBoard[kingSquare[0]][kingSquare[1]].color:
+                    return False
+
+    for move in rookMoves:
+        foundPiece = False
+        kingVision = (king.place[0] + move[0], king.place[1] + move[1])
+
+        while king.checkInbounds(kingVision) and foundPiece == False:
+            if isinstance(testBoard[kingVision[0]][kingVision[1]], Piece):
+                foundPiece = True
+                if isinstance(testBoard[kingVision[0]][kingVision[1]], Rook) or isinstance(testBoard[kingVision[0]][kingVision[1]], Queen):
+                    if colorPlaying != testBoard[kingVision[0]][kingVision[1]].color:
                         return False
             else:
                 kingVision = (kingVision[0] + move[0], kingVision[1] + move[1])
@@ -98,10 +168,10 @@ def checkKingCheck(myBoard, myMove, piece, colorPlaying):
         foundPiece = False
         kingVision = (king.place[0] + move[0], king.place[1] + move[1])
         while king.checkInbounds(kingVision) and foundPiece == False:
-            if isinstance(testBoard.lookAtSquare(kingVision), Piece):
+            if isinstance(testBoard[kingVision[0]][kingVision[1]], Piece):
                 foundPiece = True
-                if isinstance(testBoard.lookAtSquare(kingVision), Bishop) or isinstance(myBoard.lookAtSquare(kingVision), Queen):
-                    if colorPlaying != testBoard.lookAtSquare(kingVision).color:
+                if isinstance(testBoard[kingVision[0]][kingVision[1]], Bishop) or isinstance(testBoard[kingVision[0]][kingVision[1]], Queen):
+                    if colorPlaying != testBoard[kingVision[0]][kingVision[1]].color:
                         return False
             else:
                 kingVision = (kingVision[0] + move[0], kingVision[1] + move[1])
@@ -109,29 +179,10 @@ def checkKingCheck(myBoard, myMove, piece, colorPlaying):
     for move in knightMoves:
         kingSquare = king.place
         if king.checkInbounds(kingSquare):
-            if isinstance(testBoard.lookAtSquare(kingSquare), Knight):
-                if colorPlaying != testBoard.lookAtSquare(kingSquare).color:
+            if isinstance(testBoard[kingVision[0]][kingVision[1]], Knight):
+                if colorPlaying != testBoard[kingSquare[0]][kingSquare[1]].color:
                     return False
-    piece.legalOptions.append(myMove)
-
-def getLegalMoves(myBoard, colorPlaying):
-    allPieces = getListOfAllPieces(myBoard)
-    getAllMovementOptions(myBoard, allPieces)
-
-    moveLegality = 0
-    for piece in allPieces:
-        if piece.color == colorPlaying:
-            piece.legalOptions = []
-            if piece.color == "white":
-                for myMove in piece.viableOptions:
-                    moveLegality = checkKingCheck(myBoard, myMove, piece, colorPlaying)
-            else:
-                for myMove in piece.viableOptions:
-                    moveLegality = checkKingCheck(myBoard, myMove, piece, colorPlaying)
-
-
-            #if moveLegality == True:
-                #piece.legalOptions.append(piece)
+    piece.legalOptions.append(myMove) #I'm only copying list here, but look into ways you can keep one list
 def checkForPins(myBoard, piece, oppKing):
     #If 'piece' has a line at the king, but there's at least one other piece in the middle
     if oppKing.place in piece.movementOptions and oppKing.place not in piece.viableOptions:

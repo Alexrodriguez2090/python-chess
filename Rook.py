@@ -14,8 +14,8 @@ class Rook(Piece):
             self.icon = f"{Colors.BLUE}R{Colors.END}"
 
     def getMovementOptions(self, myBoard):
-        movementOptions = set([])
-        viableOptions = set([])
+        movementOptions = []
+        viableOptions = []
 
         for move in self.movementDirections:
             isBlocked = False
@@ -27,13 +27,13 @@ class Rook(Piece):
                 if self.checkInbounds(newCoords):
                     if isinstance(myBoard.lookAtSquare(newCoords), Piece):
                         if myBoard.lookAtSquare(newCoords).color != self.color and isBlocked == False:
-                            viableOptions.add(newCoords)
+                            viableOptions.append(newCoords)
                         isBlocked = True
 
                     if isBlocked == False:
-                        viableOptions.add(newCoords)
+                        viableOptions.append(newCoords)
 
-                    movementOptions.add(newCoords)
+                    movementOptions.append(newCoords)
 
         self.movementOptions = movementOptions
         self.viableOptions = viableOptions
