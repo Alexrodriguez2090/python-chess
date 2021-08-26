@@ -6,11 +6,14 @@ class Knight(Piece):
         Piece.__init__(self, color, place)
         self.movementDirections = [(2, 1), (-2, 1), (2, -1), (-2, -1), (1, 2), (-1, 2), (1, -2), (-1, -2)]
         self.name = "Knight"
+        self.worth = 3
 
         if color == "white":
             self.icon = "N"
+            self.imageLink = "images/pieces/icpieces/wN.svg"
         else:
             self.icon = f"{Colors.BLUE}N{Colors.END}"
+            self.imageLink = "images/pieces/icpieces/bN.svg"
 
     def getMovementOptions(self, myBoard):
         movementOptions = []

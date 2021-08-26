@@ -7,15 +7,19 @@ class Pawn(Piece):
         self.hasMoved = False
         self.justMovedTwoSquares = False
         self.name = "Pawn"
+        self.worth = 1
 
         if self.color == "white":
             self.movementDirections = [(-1, 0)]
             self.attackDirections = [(-1, 1), (-1, -1)]
             self.icon = "P"
-        elif self.color == "black":
+            self.imageLink = "images/pieces/icpieces/wP.svg"
+
+        else:
             self.movementDirections = [(1, 0)]
             self.attackDirections = [(1, 1), (1, -1)]
             self.icon = f"{Colors.BLUE}P{Colors.END}"
+            self.imageLink = "images/pieces/icpieces/bP.svg"
 
     def getMovementOptions(self, myBoard):
         movementOptions = []

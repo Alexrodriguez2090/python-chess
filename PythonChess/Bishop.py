@@ -6,11 +6,14 @@ class Bishop(Piece):
         Piece.__init__(self, color, place)
         self.movementDirections = [(1, 1), (-1, 1), (1, -1), (-1, -1)]
         self.name = "Bishop"
+        self.worth = 3
 
         if color == "white":
             self.icon = "B"
+            self.imageLink = "images/pieces/icpieces/wB.svg"
         else:
             self.icon = f"{Colors.BLUE}B{Colors.END}"
+            self.imageLink = "images/pieces/icpieces/bB.svg"
 
     def getMovementOptions(self, myBoard):
         movementOptions = []

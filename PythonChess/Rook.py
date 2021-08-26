@@ -7,11 +7,14 @@ class Rook(Piece):
         self.hasMoved = False
         self.movementDirections = [(1, 0), (0, 1), (-1, 0), (0, -1)]
         self.name = "Rook"
+        self.worth = 5
 
         if color == "white":
             self.icon = "R"
+            self.imageLink = "images/pieces/icpieces/wR.svg"
         else:
             self.icon = f"{Colors.BLUE}R{Colors.END}"
+            self.imageLink = "images/pieces/icpieces/bR.svg"
 
     def getMovementOptions(self, myBoard):
         movementOptions = []

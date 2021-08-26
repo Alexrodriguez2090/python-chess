@@ -6,11 +6,14 @@ class Queen(Piece):
         Piece.__init__(self, color, place)
         self.movementDirections = [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
         self.name = "Queen"
+        self.worth = 9
 
         if color == "white":
             self.icon = "Q"
+            self.imageLink = "images/pieces/icpieces/wQ.svg"
         else:
             self.icon = f"{Colors.BLUE}Q{Colors.END}"
+            self.imageLink = "images/pieces/icpieces/bQ.svg"
 
     def getMovementOptions(self, myBoard):
         movementOptions = []

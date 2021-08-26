@@ -26,12 +26,17 @@ def updateMovementOptions(squareMovedFrom, squareMovedTo, myBoard):
         if squareMovedFrom in myBoard.lookAtSquare(piece[2]).movementDirections or squareMovedTo in myBoard.lookAtSquare(piece[2]).movementDirections:
             myBoard.lookAtSquare(piece[2]).getMovementOptions(myBoard)
 
-def getKingPiece(allPieces, colorPlaying):
+def getAllyKingPiece(allPieces, colorPlaying):
     for piece in allPieces:
         if isinstance(piece, King) and piece.color == colorPlaying:
             return piece
 
-def _getLegalMoves(testBoard, myMove, piece, colorPlaying, king):
+def getOppKingPiece(allPieces, colorPlaying):
+    for piece in allPieces:
+        if isinstance(piece, King) and piece.color != colorPlaying:
+            return piece
+
+def _getLegalMoves(testBoard, myMove, piece, colorPlaying, king, oppKing):
     squareMovedTo = testBoard.squares[myMove[0]][myMove[1]]
     testBoard.squares[myMove[0]][myMove[1]] = testBoard.lookAtSquare(piece.place)
     testBoard.squares[piece.place[0]][piece.place[1]] = 0
@@ -82,14 +87,15 @@ def _getLegalMoves(testBoard, myMove, piece, colorPlaying, king):
             if isinstance(testBoard.lookAtSquare(kingSquare), Pawn):
                 if colorPlaying != testBoard.lookAtSquare(kingSquare).color:
                     return
+
     piece.legalOptions.append(myMove)
 
 def getLegalMoves(myBoard, colorPlaying):
     allPieces = getListOfAllPieces(myBoard)
     getAllMovementOptions(myBoard, allPieces)
 
-    king = getKingPiece(allPieces, colorPlaying)
-
+    king = getAllyKingPiece(allPieces, colorPlaying)
+    oppKing = getOppKingPiece(allPieces, colorPlaying)
     testBoard = copy.deepcopy(myBoard)
 
     for piece in allPieces:
@@ -97,11 +103,15 @@ def getLegalMoves(myBoard, colorPlaying):
             piece.legalOptions = []
             for myMove in piece.viableOptions:
                 squareMovedTo = testBoard.squares[myMove[0]][myMove[1]] #Save the piece being moved into
-                _getLegalMoves(testBoard, myMove, piece, colorPlaying, king)
+                _getLegalMoves(testBoard, myMove, piece, colorPlaying, king, oppKing)
 
                 #Put the pieces back
                 testBoard.squares[piece.place[0]][piece.place[1]] = testBoard.squares[myMove[0]][myMove[1]]
                 testBoard.squares[myMove[0]][myMove[1]] = squareMovedTo
+
+    for oppMove in oppKing.movementOptions:
+        if oppMove in king.legalOptions:
+            king.legalOptions.remove(oppMove)
 
 def movePiece(myBoard, pieceMoved, squareMovedTo, colorPlaying): #cleanup after actually working
     if isinstance(myBoard.lookAtSquare(pieceMoved), Piece):
