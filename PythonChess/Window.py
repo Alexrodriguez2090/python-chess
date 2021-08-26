@@ -88,14 +88,8 @@ class Window(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
 
-    def addMoves(piece):
-        for move in piece.legalOptions:
-            movePicture = QtWidgets.QLabel(piece.movewidget)
-            movePicture.setGeometry(QtCore.QRect(move[1] * 75, move[0] * 75, piece.ratio, piece.ratio))
-            movePicture.setPixmap(QtGui.QPixmap(piece.imageLink))
-            movePicture.setScaledContents(True)
-
     def removeMoves(self):
+        print("once")
         for piece in self.allPieces:
             for move in piece.showMoves:
                 move.setVisible(False)
@@ -107,5 +101,4 @@ class Window(object):
                 if isinstance(square, Piece):
                     piece = MovingObject(self.centralwidget, self.movewidget, square, square.place[1] * 75, square.place[0] * 75, 75)
                     self.allPieces.append(piece)
-                    for piece in self.allPieces:
-                        piece.clickedSignal.connect(self.removeMoves)
+                    piece.clickedSignal.connect(self.removeMoves)
