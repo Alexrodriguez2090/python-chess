@@ -10,10 +10,10 @@ class Queen(Piece):
 
         if color == "white":
             self.icon = "Q"
-            self.imageLink = "images/pieces/icpieces/wQ.svg"
+            self.imageLink = "images/pieces/icpieces-png/wQ.png"
         else:
             self.icon = f"{Colors.BLUE}Q{Colors.END}"
-            self.imageLink = "images/pieces/icpieces/bQ.svg"
+            self.imageLink = "images/pieces/icpieces-png/bQ.png"
 
     def getMovementOptions(self, myBoard):
         movementOptions = []

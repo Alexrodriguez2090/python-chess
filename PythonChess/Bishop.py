@@ -10,10 +10,10 @@ class Bishop(Piece):
 
         if color == "white":
             self.icon = "B"
-            self.imageLink = "images/pieces/icpieces/wB.svg"
+            self.imageLink = "images/pieces/icpieces-png/wB.png"
         else:
             self.icon = f"{Colors.BLUE}B{Colors.END}"
-            self.imageLink = "images/pieces/icpieces/bB.svg"
+            self.imageLink = "images/pieces/icpieces-png/bB.png"
 
     def getMovementOptions(self, myBoard):
         movementOptions = []

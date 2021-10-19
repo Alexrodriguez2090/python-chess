@@ -11,10 +11,10 @@ class Rook(Piece):
 
         if color == "white":
             self.icon = "R"
-            self.imageLink = "images/pieces/icpieces/wR.svg"
+            self.imageLink = "images/pieces/icpieces-png/wR.png"
         else:
             self.icon = f"{Colors.BLUE}R{Colors.END}"
-            self.imageLink = "images/pieces/icpieces/bR.svg"
+            self.imageLink = "images/pieces/icpieces-png/bR.png"
 
     def getMovementOptions(self, myBoard):
         movementOptions = []

@@ -5,7 +5,6 @@ from Knight import Knight
 from Queen import Queen
 from King import King
 from Pawn import Pawn
-import Move
 
 class Board:
     def __init__(self):

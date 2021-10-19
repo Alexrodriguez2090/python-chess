@@ -10,10 +10,10 @@ class Knight(Piece):
 
         if color == "white":
             self.icon = "N"
-            self.imageLink = "images/pieces/icpieces/wN.svg"
+            self.imageLink = "images/pieces/icpieces-png/wN.png"
         else:
             self.icon = f"{Colors.BLUE}N{Colors.END}"
-            self.imageLink = "images/pieces/icpieces/bN.svg"
+            self.imageLink = "images/pieces/icpieces-png/bN.png"
 
     def getMovementOptions(self, myBoard):
         movementOptions = []

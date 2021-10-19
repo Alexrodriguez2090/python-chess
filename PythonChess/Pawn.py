@@ -13,13 +13,13 @@ class Pawn(Piece):
             self.movementDirections = [(-1, 0)]
             self.attackDirections = [(-1, 1), (-1, -1)]
             self.icon = "P"
-            self.imageLink = "images/pieces/icpieces/wP.svg"
+            self.imageLink = "images/pieces/icpieces-png/wP.png"
 
         else:
             self.movementDirections = [(1, 0)]
             self.attackDirections = [(1, 1), (1, -1)]
             self.icon = f"{Colors.BLUE}P{Colors.END}"
-            self.imageLink = "images/pieces/icpieces/bP.svg"
+            self.imageLink = "images/pieces/icpieces-png/bP.png"
 
     def getMovementOptions(self, myBoard):
         movementOptions = []

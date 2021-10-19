@@ -10,10 +10,10 @@ class King(Piece):
 
         if color == "white":
             self.icon = "K"
-            self.imageLink = "images/pieces/icpieces/wK.svg"
+            self.imageLink = "images/pieces/icpieces-png/wK.png"
         else:
             self.icon = f"{Colors.BLUE}K{Colors.END}"
-            self.imageLink = "images/pieces/icpieces/bK.svg"
+            self.imageLink = "images/pieces/icpieces-png/bK.png"
 
     def getMovementOptions(self, myBoard): #Fix up king movement
         isBlocked = False

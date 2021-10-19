@@ -1,5 +1,3 @@
-from typing import Tuple
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from Piece import Piece
 from Board import Board
@@ -8,7 +6,6 @@ class MovingObject(QtWidgets.QLabel):
     hideMovesSignal = QtCore.pyqtSignal()
     turnOverSignal = QtCore.pyqtSignal()
     boardMoveSignal = QtCore.pyqtSignal(Piece, tuple)
-
     def __init__(self, centralwidget, piece, x, y, r):
         super().__init__(centralwidget)
 
@@ -31,7 +28,6 @@ class MovingObject(QtWidgets.QLabel):
         self.hideMovesSignal.emit()
         self.showMoves = []
         for move in self.piece.legalOptions:
-            print(move)
             movePicture = QtWidgets.QLabel(self.centralwidget)
             movePicture.setGeometry(QtCore.QRect(move[1] * self.ratio, move[0] * self.ratio, self.ratio, self.ratio))
             movePicture.setPixmap(QtGui.QPixmap(self.imageLink))
@@ -44,26 +40,25 @@ class MovingObject(QtWidgets.QLabel):
             return
         else:
             self.move(self.pos().x() + event.pos().x() - self.ratioHalf, self.pos().y() + event.pos().y() - self.ratioHalf)
-        
+
     def mouseReleaseEvent(self, event):
         moved = False
         for move in self.piece.legalOptions:
             moveX = move[1] * self.ratio
             moveY = move[0] * self.ratio
             if abs(moveX - self.pos().x()) < self.ratioHalf and abs(moveY - self.pos().y()) < self.ratioHalf:
+                self.move(moveX, moveY)
+                self.currentPosition = (moveX, moveY)
+                self.piece.place = (move[0], move[1])
                 moved = True
-                newCoords = (move[0], move[1])
-                self.boardMoveSignal.emit(self.piece, newCoords) #Invoke MoveEngine.movePiece
                 self.hideMovesSignal.emit()
-
-                self.currentPosition = (self.piece.place[1] * 75, self.piece.place[0] * 75)
+                self.turnOverSignal.emit()
                 break
 
         if moved == False:
             self.move(self.currentPosition[0], self.currentPosition[1])
 
         print(f"x: {self.pos().x()}, y: {self.pos().y()}")
-
 
 class Window(object):
     def setupUi(self, MainWindow):
@@ -112,7 +107,7 @@ class Window(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
 
-    def removeMoves(self): #Change to remove only for the piece that was clicked on
+    def removeMoves(self):
         for piece in self.allPieces:
             for move in piece.showMoves:
                 move.setVisible(False)
