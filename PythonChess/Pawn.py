@@ -14,7 +14,6 @@ class Pawn(Piece):
             self.attackDirections = [(-1, 1), (-1, -1)]
             self.icon = "P"
             self.imageLink = "images/pieces/icpieces-png/wP.png"
-
         else:
             self.movementDirections = [(1, 0)]
             self.attackDirections = [(1, 1), (1, -1)]

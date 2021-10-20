@@ -14,3 +14,8 @@ class Piece:
             return True
         else:
             return False
+
+    def blankMovementOptions(self):
+        self.movementOptions = []
+        self.viableOptions = []
+        self.legalOptions = []

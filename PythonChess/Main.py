@@ -14,19 +14,20 @@ class Main:
         if __name__ == "__main__":
             app = QtWidgets.QApplication(sys.argv)
             MainWindow = QtWidgets.QMainWindow()
-            ui = Window()
-            ui.setupUi(MainWindow)
-            visualPieces = ui.addPieces(MainWindow, self.myBoard.squares)
+            self.ui = Window()
+            self.ui.setupUi(MainWindow)
+            visualPieces = self.ui.addPieces(self.myBoard.squares)
             for piece in visualPieces:
                 piece.boardMoveSignal.connect(self.movePieceSetup)
             MainWindow.show()
             sys.exit(app.exec_())
 
-    def movePieceSetup(self, pieceMoved, newCoords):
+    def movePieceSetup(self, pieceMoved, newCoords, onBoardCoords):
         print(newCoords)
-        actualMoveCheck = self.Move.movePiece(self.myBoard, pieceMoved, newCoords)
-        if actualMoveCheck:
+        checkIfMoved = self.Move.movePiece(self.myBoard, pieceMoved, newCoords)
+        if checkIfMoved:
             self.Move.getLegalMoves(self.myBoard)
+            self.ui.updatePieces(onBoardCoords)
 
 
 main = Main()

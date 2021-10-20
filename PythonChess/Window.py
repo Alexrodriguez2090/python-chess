@@ -7,7 +7,7 @@ from Board import Board
 class MovingObject(QtWidgets.QLabel):
     hideMovesSignal = QtCore.pyqtSignal()
     turnOverSignal = QtCore.pyqtSignal()
-    boardMoveSignal = QtCore.pyqtSignal(Piece, tuple)
+    boardMoveSignal = QtCore.pyqtSignal(Piece, tuple, tuple)
 
     def __init__(self, centralwidget, piece, x, y, r):
         super().__init__(centralwidget)
@@ -51,12 +51,15 @@ class MovingObject(QtWidgets.QLabel):
             moveX = move[1] * self.ratio
             moveY = move[0] * self.ratio
             if abs(moveX - self.pos().x()) < self.ratioHalf and abs(moveY - self.pos().y()) < self.ratioHalf:
-                moved = True
                 newCoords = (move[0], move[1])
-                self.boardMoveSignal.emit(self.piece, newCoords) #Invoke MoveEngine.movePiece
+                onBoardCoords = (moveX, moveY)
+
+                self.boardMoveSignal.emit(self.piece, newCoords, onBoardCoords) #Invoke MoveEngine.movePiece
                 self.hideMovesSignal.emit()
 
-                self.currentPosition = (self.piece.place[1] * 75, self.piece.place[0] * 75)
+                moved = True
+                self.currentPosition = (onBoardCoords)
+                self.move(moveX, moveY)
                 break
 
         if moved == False:
@@ -117,7 +120,7 @@ class Window(object):
             for move in piece.showMoves:
                 move.setVisible(False)
 
-    def addPieces(self, MainWindow, myBoard):
+    def addPieces(self, myBoard):
         self.allPieces = []
         for row in myBoard:
             for square in row:
@@ -126,3 +129,9 @@ class Window(object):
                     self.allPieces.append(piece)
                     piece.hideMovesSignal.connect(self.removeMoves)
         return self.allPieces
+
+    def updatePieces(self, onBoardCoords):
+        for visiblePiece in self.allPieces:
+            if visiblePiece.currentPosition == onBoardCoords:
+                print("true")
+                visiblePiece.hide()

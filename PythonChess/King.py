@@ -24,11 +24,13 @@ class King(Piece):
 
             newCoords = (self.place[0] + move[0], self.place[1] + move[1])
             if self.checkInbounds(newCoords):
+                movementOptions.append(newCoords)
+
                 if isinstance(myBoard.lookAtSquare(newCoords), Piece):
                     if myBoard.lookAtSquare(newCoords).color != self.color:
                         viableOptions.append(newCoords)
-
-                movementOptions.append(newCoords)
+                else:
+                    viableOptions.append(newCoords)
 
         self.movementOptions = movementOptions
         self.viableOptions = viableOptions
