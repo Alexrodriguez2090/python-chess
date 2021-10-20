@@ -1,12 +1,8 @@
-from typing import Tuple
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from Piece import Piece
-from Board import Board
 
 class MovingObject(QtWidgets.QLabel):
     hideMovesSignal = QtCore.pyqtSignal()
-    turnOverSignal = QtCore.pyqtSignal()
     boardMoveSignal = QtCore.pyqtSignal(Piece, tuple, tuple)
 
     def __init__(self, centralwidget, piece, x, y, r):
@@ -78,7 +74,7 @@ class Window(object):
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
         MainWindow.setMinimumSize(QtCore.QSize(600, 600))
-        MainWindow.setMaximumSize(QtCore.QSize(1800, 1800))
+        MainWindow.setMaximumSize(QtCore.QSize(600, 600))
         MainWindow.setSizeIncrement(QtCore.QSize(0, 0))
         MainWindow.setMouseTracking(True)
         MainWindow.setWindowOpacity(1.0)
@@ -133,5 +129,4 @@ class Window(object):
     def updatePieces(self, onBoardCoords):
         for visiblePiece in self.allPieces:
             if visiblePiece.currentPosition == onBoardCoords:
-                print("true")
                 visiblePiece.hide()
