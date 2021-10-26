@@ -19,10 +19,10 @@ class MoveEngine():
         self.knightMoves = [(2, 1), (-2, 1), (2, -1), (-2, -1), (1, 2), (-1, 2), (1, -2), (-1, -2)]
 
         self.pawnMovesWhite = [(1, 1), (1, -1)]
-        self.pawnAttacksWhite = [(-1, 1), (-1, -1)]
+        self.pawnAttacksWhite = [(1, 1), (1, -1)]
 
         self.pawnMovesBlack = [(-1, 1), (-1, -1)]
-        self.pawnAttacksBlack = [(1, 1), (1, -1)]
+        self.pawnAttacksBlack = [(-1, 1), (-1, -1)]
     
     def getLegalMoves(self, myBoard):
         self.getListOfAllPieces(myBoard) #Make this not iterate over every turn ?
@@ -31,10 +31,7 @@ class MoveEngine():
         king = self.getAllyKingPiece()
         kingPlace = (king.place[0], king.place[1])
         oppKing = self.getOppKingPiece()
-        testBoard = copy.deepcopy(myBoard)
-        print(king.movementOptions)
-        print(king.viableOptions)
-        print(self.colorPlaying)
+        testBoard = copy.copy(myBoard)
         for piece in self.allPieces:
             if piece.color == self.colorPlaying:
                 piece.legalOptions = []
@@ -64,7 +61,6 @@ class MoveEngine():
             kingVision = (kingPlace[0] + move[0], kingPlace[1] + move[1])
             while piece.checkInbounds(kingVision) and foundPiece == False:
                 if isinstance(testBoard.lookAtSquare(kingVision), Piece):
-                    print(testBoard.lookAtSquare(kingVision))
                     foundPiece = True
                     if isinstance(testBoard.lookAtSquare(kingVision), Bishop) or isinstance(testBoard.lookAtSquare(kingVision), Queen):
                         if self.colorPlaying != testBoard.lookAtSquare(kingVision).color:
@@ -101,7 +97,7 @@ class MoveEngine():
                             return
         else:
             for move in self.pawnAttacksWhite:
-                kingSquare = kingPlace
+                kingSquare = (kingPlace[0] + move[0], kingPlace[1] + move[1])
                 if piece.checkInbounds(kingSquare):
                     if isinstance(testBoard.lookAtSquare(kingSquare), Pawn):
                         if self.colorPlaying != testBoard.lookAtSquare(kingSquare).color:
@@ -110,11 +106,6 @@ class MoveEngine():
         piece.legalOptions.append(myMove)
  
     def movePiece(self, myBoard, pieceMoved, squareMovedTo):
-        print(squareMovedTo)
-        print(pieceMoved.legalOptions)
-        print()
-        print(self.colorPlaying)
-        print(pieceMoved.color)
         if squareMovedTo in pieceMoved.legalOptions and self.colorPlaying == pieceMoved.color:
             squareMovedFrom = pieceMoved.place
 
@@ -123,8 +114,16 @@ class MoveEngine():
 
             myBoard.squares[squareMovedFrom[0]][squareMovedFrom[1]] = 0
 
-            if pieceMoved.name == "Rook" or pieceMoved.name == "Pawn":
+            if pieceMoved.name == "Rook" or pieceMoved.name == "Pawn" or pieceMoved.name == "King":
                 pieceMoved.hasMoved = True
+
+            if pieceMoved.name == "Pawn":
+                if pieceMoved.place[0] == 0 and pieceMoved.color == "white":
+                    myBoard.squares[squareMovedTo[0]][squareMovedTo[1]] = 0
+                    Queen(pieceMoved.color, (squareMovedTo[0], squareMovedTo[1]), pieceMoved.centralwidget)
+                elif pieceMoved.place[0] == 7 and pieceMoved.color == "black":
+                    pass
+
 
             self.changeColorPlaying()
 

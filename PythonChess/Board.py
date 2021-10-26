@@ -10,33 +10,33 @@ class Board:
     def __init__(self):
         self.squares = [[0]*8 for _ in range(8)]
 
-    def setup(self): #add to init?
+    def setup(self, centralwidget): #add to init?
         rowNum = 0
         for row in self.squares:
             if rowNum == 0: #Black's backline
-                row[0] = Rook("black", (rowNum, 0))
-                row[1] = Knight("black", (rowNum, 1))
-                row[2] = Bishop("black", (rowNum, 2))
-                row[3] = Queen("black", (rowNum, 3))
-                row[4] = King("black", (rowNum, 4))
-                row[5] = Bishop("black", (rowNum, 5))
-                row[6] = Knight("black", (rowNum, 6))
-                row[7] = Rook("black", (rowNum, 7))
+                row[0] = Rook("black", (rowNum, 0), centralwidget)
+                row[1] = Knight("black", (rowNum, 1), centralwidget)
+                row[2] = Bishop("black", (rowNum, 2), centralwidget)
+                row[3] = Queen("black", (rowNum, 3), centralwidget)
+                row[4] = King("black", (rowNum, 4), centralwidget)
+                row[5] = Bishop("black", (rowNum, 5), centralwidget)
+                row[6] = Knight("black", (rowNum, 6), centralwidget)
+                row[7] = Rook("black", (rowNum, 7), centralwidget)
             elif rowNum == 1: #Black's pawnline
                 for rowSquare in range(8):
-                    row[rowSquare] = Pawn("black", (rowNum, rowSquare))
+                    row[rowSquare] = Pawn("black", (rowNum, rowSquare), centralwidget)
             elif rowNum == 6: #White's pawnline
                 for rowSquare in range(8):
-                    row[rowSquare] = Pawn("white", (rowNum, rowSquare))
+                    row[rowSquare] = Pawn("white", (rowNum, rowSquare), centralwidget)
             elif rowNum == 7: #White's backline
-                row[0] = Rook("white", (rowNum, 0))
-                row[1] = Knight("white", (rowNum, 1))
-                row[2] = Bishop("white", (rowNum, 2))
-                row[3] = Queen("white", (rowNum, 3))
-                row[4] = King("white", (rowNum, 4))
-                row[5] = Bishop("white", (rowNum, 5))
-                row[6] = Knight("white", (rowNum, 6))
-                row[7] = Rook("white", (rowNum, 7))
+                row[0] = Rook("white", (rowNum, 0), centralwidget)
+                row[1] = Knight("white", (rowNum, 1), centralwidget)
+                row[2] = Bishop("white", (rowNum, 2), centralwidget)
+                row[3] = Queen("white", (rowNum, 3), centralwidget)
+                row[4] = King("white", (rowNum, 4), centralwidget)
+                row[5] = Bishop("white", (rowNum, 5), centralwidget)
+                row[6] = Knight("white", (rowNum, 6), centralwidget)
+                row[7] = Rook("white", (rowNum, 7), centralwidget)
             rowNum += 1
 
     def lookAtSquare(self, coords):

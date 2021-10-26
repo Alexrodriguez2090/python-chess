@@ -2,14 +2,13 @@ from Piece import Piece
 from Colors import Colors
 
 class Pawn(Piece):
-    def __init__(self, color, place):
-        Piece.__init__(self, color, place)
+    def __init__(self, color, place, centralwidget):
         self.hasMoved = False
         self.justMovedTwoSquares = False
         self.name = "Pawn"
         self.worth = 1
 
-        if self.color == "white":
+        if color == "white":
             self.movementDirections = [(-1, 0)]
             self.attackDirections = [(-1, 1), (-1, -1)]
             self.icon = "P"
@@ -19,6 +18,8 @@ class Pawn(Piece):
             self.attackDirections = [(1, 1), (1, -1)]
             self.icon = f"{Colors.BLUE}P{Colors.END}"
             self.imageLink = "images/pieces/icpieces-png/bP.png"
+
+        Piece.__init__(self, color, place, centralwidget)
 
     def getMovementOptions(self, myBoard):
         movementOptions = []

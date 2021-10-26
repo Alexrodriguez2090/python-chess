@@ -2,8 +2,7 @@ from Piece import Piece
 from Colors import Colors
 
 class Bishop(Piece):
-    def __init__(self, color, place):
-        Piece.__init__(self, color, place)
+    def __init__(self, color, place, centralwidget):
         self.movementDirections = [(1, 1), (-1, 1), (1, -1), (-1, -1)]
         self.name = "Bishop"
         self.worth = 3
@@ -14,6 +13,8 @@ class Bishop(Piece):
         else:
             self.icon = f"{Colors.BLUE}B{Colors.END}"
             self.imageLink = "images/pieces/icpieces-png/bB.png"
+        
+        Piece.__init__(self, color, place, centralwidget)
 
     def getMovementOptions(self, myBoard):
         movementOptions = []

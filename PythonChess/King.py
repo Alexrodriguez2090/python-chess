@@ -2,8 +2,7 @@ from Piece import Piece
 from Colors import Colors
 
 class King(Piece):
-    def __init__(self, color, place):
-        Piece.__init__(self, color, place)
+    def __init__(self, color, place, centralwidget):
         self.hasMoved = False
         self.movementDirections = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
         self.name = "King"
@@ -14,6 +13,8 @@ class King(Piece):
         else:
             self.icon = f"{Colors.BLUE}K{Colors.END}"
             self.imageLink = "images/pieces/icpieces-png/bK.png"
+        
+        Piece.__init__(self, color, place, centralwidget)
 
     def getMovementOptions(self, myBoard): #Fix up king movement
         isBlocked = False

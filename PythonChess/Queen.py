@@ -2,8 +2,7 @@ from Piece import Piece
 from Colors import Colors
 
 class Queen(Piece):
-    def __init__(self, color, place):
-        Piece.__init__(self, color, place)
+    def __init__(self, color, place, centralwidget):
         self.movementDirections = [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
         self.name = "Queen"
         self.worth = 9
@@ -14,6 +13,8 @@ class Queen(Piece):
         else:
             self.icon = f"{Colors.BLUE}Q{Colors.END}"
             self.imageLink = "images/pieces/icpieces-png/bQ.png"
+
+        Piece.__init__(self, color, place, centralwidget)
 
     def getMovementOptions(self, myBoard):
         movementOptions = []
