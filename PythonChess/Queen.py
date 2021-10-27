@@ -2,17 +2,17 @@ from Piece import Piece
 from Colors import Colors
 
 class Queen(Piece):
-    def __init__(self, color, place, centralwidget):
+    def __init__(self, color, place, centralwidget, fullPiecesPath):
         self.movementDirections = [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
         self.name = "Queen"
         self.worth = 9
 
         if color == "white":
             self.icon = "Q"
-            self.imageLink = "images/pieces/icpieces-png/wQ.png"
+            self.imageLink = fullPiecesPath + "/wQ.png"
         else:
             self.icon = f"{Colors.BLUE}Q{Colors.END}"
-            self.imageLink = "images/pieces/icpieces-png/bQ.png"
+            self.imageLink = fullPiecesPath + "/bQ.png"
 
         Piece.__init__(self, color, place, centralwidget)
 

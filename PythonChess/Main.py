@@ -1,19 +1,27 @@
 from Board import Board
 from Window import Window
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from MoveEngine import MoveEngine
+
+import configparser
 import sys
 
 class Main:
     def __init__(self):
 
+        config = configparser.ConfigParser()
+        config.read("PythonChess/paths.ini")
+        fullPiecesPath = config["DEFAULT"]["piecesPath"] + config["OPTIONS"]["piecesUsed"]
+        fullBoardPath = config["DEFAULT"]["boardsPath"] + config["OPTIONS"]["boardUsed"]
+        print(config['DEFAULT']["boardsPath"])
+
         if __name__ == "__main__":
             app = QtWidgets.QApplication(sys.argv)
             MainWindow = QtWidgets.QMainWindow()
             self.ui = Window()
-            self.ui.setupUi(MainWindow)
+            self.ui.setupUi(MainWindow, fullBoardPath)
 
-            self.myBoard = Board()
+            self.myBoard = Board(fullPiecesPath)
             self.myBoard.setup(self.ui.getCentralwidget())
             self.Move = MoveEngine()
             self.Move.getLegalMoves(self.myBoard)

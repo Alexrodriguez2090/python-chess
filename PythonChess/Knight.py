@@ -2,17 +2,17 @@ from Piece import Piece
 from Colors import Colors
 
 class Knight(Piece):
-    def __init__(self, color, place, centralwidget):
+    def __init__(self, color, place, centralwidget, fullPiecesPath):
         self.movementDirections = [(2, 1), (-2, 1), (2, -1), (-2, -1), (1, 2), (-1, 2), (1, -2), (-1, -2)]
         self.name = "Knight"
         self.worth = 3
 
         if color == "white":
             self.icon = "N"
-            self.imageLink = "images/pieces/icpieces-png/wN.png"
+            self.imageLink = fullPiecesPath + "/wN.png"
         else:
             self.icon = f"{Colors.BLUE}N{Colors.END}"
-            self.imageLink = "images/pieces/icpieces-png/bN.png"
+            self.imageLink = fullPiecesPath + "/bN.png"
     
         Piece.__init__(self, color, place, centralwidget)
 

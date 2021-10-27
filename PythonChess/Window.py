@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from Piece import Piece
 
 class Window(object):
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow, fullBoardPath):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(600, 600)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -32,11 +32,11 @@ class Window(object):
         self.Board.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.Board.setMouseTracking(True)
         self.Board.setAutoFillBackground(True)
-        self.Board.setStyleSheet("images/boards/wood.jpg")
+        self.Board.setStyleSheet(fullBoardPath)
         self.Board.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.Board.setLineWidth(1)
         self.Board.setText("")
-        self.Board.setPixmap(QtGui.QPixmap("images/boards/wood.jpg"))
+        self.Board.setPixmap(QtGui.QPixmap(fullBoardPath))
         self.Board.setScaledContents(True)
         self.Board.setObjectName("Board")
         MainWindow.setCentralWidget(self.centralwidget)

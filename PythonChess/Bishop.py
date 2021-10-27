@@ -2,17 +2,18 @@ from Piece import Piece
 from Colors import Colors
 
 class Bishop(Piece):
-    def __init__(self, color, place, centralwidget):
+    def __init__(self, color, place, centralwidget, fullPiecesPath):
         self.movementDirections = [(1, 1), (-1, 1), (1, -1), (-1, -1)]
         self.name = "Bishop"
         self.worth = 3
 
         if color == "white":
             self.icon = "B"
-            self.imageLink = "images/pieces/icpieces-png/wB.png"
+            self.imageLink = fullPiecesPath + "/wB.png"
+            print(self.imageLink)
         else:
             self.icon = f"{Colors.BLUE}B{Colors.END}"
-            self.imageLink = "images/pieces/icpieces-png/bB.png"
+            self.imageLink = fullPiecesPath + "/bB.png"
         
         Piece.__init__(self, color, place, centralwidget)
 

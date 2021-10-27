@@ -2,7 +2,7 @@ from Piece import Piece
 from Colors import Colors
 
 class Pawn(Piece):
-    def __init__(self, color, place, centralwidget):
+    def __init__(self, color, place, centralwidget, fullPiecesPath):
         self.hasMoved = False
         self.justMovedTwoSquares = False
         self.name = "Pawn"
@@ -12,12 +12,12 @@ class Pawn(Piece):
             self.movementDirections = [(-1, 0)]
             self.attackDirections = [(-1, 1), (-1, -1)]
             self.icon = "P"
-            self.imageLink = "images/pieces/icpieces-png/wP.png"
+            self.imageLink = fullPiecesPath + "/wP.png"
         else:
             self.movementDirections = [(1, 0)]
             self.attackDirections = [(1, 1), (1, -1)]
             self.icon = f"{Colors.BLUE}P{Colors.END}"
-            self.imageLink = "images/pieces/icpieces-png/bP.png"
+            self.imageLink = fullPiecesPath + "/bP.png"
 
         Piece.__init__(self, color, place, centralwidget)
 

@@ -18,10 +18,7 @@ class MoveEngine():
         self.bishopMoves = [(1, 1), (-1, 1), (1, -1), (-1, -1)]
         self.knightMoves = [(2, 1), (-2, 1), (2, -1), (-2, -1), (1, 2), (-1, 2), (1, -2), (-1, -2)]
 
-        self.pawnMovesWhite = [(1, 1), (1, -1)]
         self.pawnAttacksWhite = [(1, 1), (1, -1)]
-
-        self.pawnMovesBlack = [(-1, 1), (-1, -1)]
         self.pawnAttacksBlack = [(-1, 1), (-1, -1)]
     
     def getLegalMoves(self, myBoard):
