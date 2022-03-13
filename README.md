@@ -1,2 +1,2 @@
 ﻿# python-chess
- # not finished
+run from root folder /python-chess
